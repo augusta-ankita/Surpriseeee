@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💘</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  height:100vh;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+}
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+  padding:20px;
+}
+.slide.active{
+  display:flex;
+  animation:fade .8s ease, zoomSlow 18s ease-in-out infinite;
+}
+.rose-slide{
+  background:
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url('Beauty&Beast.jpg') center/cover no-repeat;
+}
+@keyframes fade{from{opacity:0;transform:scale(.95)}to{opacity:1}}
+@keyframes zoomSlow{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+h1{font-size:2.8rem;margin-bottom:30px;}
+.buttons{display:flex;gap:20px;flex-wrap:wrap;}
+button{
+  padding:14px 30px;
+  font-size:1.1rem;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:.3s;
+  font-weight:600;
+}
+button:hover{transform:scale(1.1)}
+.yes{background:#fff;color:#ff4d6d;}
+.no{background:transparent;border:2px solid white;color:white;}
+.love-text{
+  font-family:'Great Vibes',cursive;
+  font-size:4rem;
+  margin-top:20px;
+}
+.image-box{width:90%;max-width:600px;}
+.image-box img{
+  width:100%;
+  border-radius:20px;
+  object-fit:contain;
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+}
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:20px;
+  animation:float 6s infinite;
+  opacity:.6;
+}
+@keyframes float{
+  0%{transform:translateY(0);opacity:0}
+  50%{opacity:1}
+  100%{transform:translateY(-100vh);opacity:0}
+}
+@keyframes shake{
+  0%{transform:translate(0)}
+  20%{transform:translate(-6px,4px)}
+  40%{transform:translate(6px,-4px)}
+  60%{transform:translate(-6px,4px)}
+  80%{transform:translate(6px,-4px)}
+  100%{transform:translate(0)}
+}
+.shake{animation:shake .4s}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="LoveMeLikeYouDo.mpeg" type="audio/mpeg">
+</audio>
+
+<button id="muteBtn" style="
+position:fixed;top:20px;right:20px;
+padding:10px 15px;border:none;border-radius:20px;
+background:white;color:#ff4d6d;cursor:pointer;z-index:1000;">
+🔇 Mute
+</button>
+
+<!-- Slide 0 -->
+<div class="slide active rose-slide" id="slideRose">
+  <h1 id="roseText" style="font-family:'Great Vibes',cursive;font-size:4rem;"></h1>
+  <h1 id="roseSub" style="font-size:2rem;"></h1>
+  <div class="buttons" style="margin-top:40px;">
+    <button class="yes" onclick="goToValentine()">Next 💖</button>
+  </div>
+</div>
+
+<!-- Slide 1 -->
+<div class="slide rose-slide" id="slide1">
+  <h1>Will you be my Valentine Mr Boyfie? 💘</h1>
+  <div class="buttons">
+    <button class="yes" onclick="showLove()">Yes 💖</button>
+    <button class="no" onclick="showRetry()">No 🙈</button>
+  </div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide rose-slide" id="slideRetry">
+  <h1>Ooops😏 Try again...</h1>
+  <div class="buttons">
+    <button class="yes" onclick="showLove()">Yes absolutely my Love 💕</button>
+    <button class="yes prank-no">No way 💘</button>
+  </div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="slideLove">
+  <div class="image-box">
+    <img src="IMG_1226.jpg">
+  </div>
+  <div class="love-text" id="loveText"></div>
+  <div class="love-text" id="loveSub"></div>
+</div>
+
+<script>
+const music = document.getElementById("bgMusic");
+const muteBtn = document.getElementById("muteBtn");
+let musicStarted = false;
+
+/* 🔥 GLOBAL FIRST INTERACTION AUDIO START */
+function startMusicOnce(){
+  if(!musicStarted){
+    music.play().then(()=>{
+      musicStarted=true;
+      muteBtn.textContent="🔇 Mute";
+    }).catch(()=>{});
+  }
+}
+
+document.addEventListener("click", startMusicOnce, { once:true });
+document.addEventListener("touchstart", startMusicOnce, { once:true });
+
+muteBtn.onclick=()=>{
+  if(music.paused){
+    music.play();
+    muteBtn.textContent="🔇 Mute";
+  }else{
+    music.pause();
+    muteBtn.textContent="🎵 Play";
+  }
+};
+
+function typeWriter(el,text,speed=80,cb){
+  let i=0; el.innerHTML="";
+  const t=setInterval(()=>{
+    el.innerHTML+=text.charAt(i++);
+    if(i>=text.length){clearInterval(t);if(cb)cb();}
+  },speed);
+}
+
+typeWriter(
+  document.getElementById("roseText"),
+  "Happy Rose Day 🌹",
+  90,
+  ()=>typeWriter(
+    document.getElementById("roseSub"),
+    "😈 Dr. Beast 💛",
+    110
+  )
+);
+
+function hideAll(){
+  document.querySelectorAll(".slide").forEach(s=>s.classList.remove("active"));
+}
+function goToValentine(){hideAll();slide1.classList.add("active");}
+function showRetry(){hideAll();slideRetry.classList.add("active");}
+function showLove(){
+  hideAll();
+  slideLove.classList.add("active");
+  typeWriter(
+    loveText,
+    "I Love You ❤️",
+    90,
+    ()=>typeWriter(loveSub,"Mah Smokie..😘",110)
+  );
+}
+
+/* prank + shake */
+const prank=document.querySelector(".prank-no");
+if(prank){
+  prank.addEventListener("mouseenter",()=>{
+    prank.style.position="absolute";
+    prank.style.left=Math.random()*70+"vw";
+    prank.style.top=Math.random()*60+"vh";
+    document.body.classList.add("shake");
+    setTimeout(()=>document.body.classList.remove("shake"),400);
+  });
+}
+
+/* floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=Math.random()*20+15+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},400);
+</script>
+
+</body>
+</html>
